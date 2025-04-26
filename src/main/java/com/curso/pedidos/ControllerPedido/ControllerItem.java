@@ -23,7 +23,7 @@ public class ControllerItem {
         return itemService.getItems();
     }
 
-    @PostMapping("/item")
+    @PostMapping ("/item")
     public Item addItem(Item item) {
         return itemService.insertItem(item);
     }
