@@ -10,6 +10,18 @@ public class Pedido {
     @GeneratedValue
     private Long id;
     private String cpf;
+    private Boolean ativado;
+
+    public Pedido(Long id, String cpf, Boolean ativado) {
+        this.id = id;
+        this.cpf = cpf;
+        this.ativado = ativado;
+    }
+
+    public Pedido(){
+
+    }
+    
     public Long getId() {
         return id;
     }
@@ -23,12 +35,12 @@ public class Pedido {
         this.cpf = cpf;
     }
 
-    public Pedido(Long id, String cpf) {
-        this.id = id;
-        this.cpf = cpf;
+    public Boolean getAtivado() {
+        return ativado;
     }
 
-    public Pedido(){
-
+    public void setAtivado(Boolean ativado) {
+        this.ativado = ativado;
     }
+
 }
