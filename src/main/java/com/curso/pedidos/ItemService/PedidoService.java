@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.curso.pedidos.DTO.PedidoDTO;
+import com.curso.pedidos.DTO.PedidodetailDTO;
 import com.curso.pedidos.Repository.PedidoRepository;
+import com.curso.pedidos.models.Item;
 import com.curso.pedidos.models.Pedido;
 import com.curso.pedidos.models.PedidoItem;
 
@@ -19,6 +21,9 @@ public class PedidoService {
 
     @Autowired
     PedidoItemService pedidoItemService;
+
+    @Autowired
+    ItemService itemService;
 
     public List<Pedido> listar() {
         return pedidoRepository.findAll();
@@ -35,8 +40,17 @@ public class PedidoService {
         return savedPedido;
     }
 
-    public Optional<Pedido> buscarPedidoId(Long id) {
-        return pedidoRepository.findById(id);
+    public PedidodetailDTO buscarPedidoId(Long id) {
+        Optional<Pedido> pedido = pedidoRepository.findById(id);
+        if (pedido.isPresent()) {
+            List<PedidoItem> listaPedidosItens =  pedidoItemService.getPedidoItemBypedidoId(id);
+            PedidodetailDTO pedidodetailDTO = new PedidodetailDTO();
+            List<Item> listaItens = itemService.listaItem(listaPedidosItens);
+            pedidodetailDTO.setItens(listaItens);
+            pedidodetailDTO.setPedido(pedido.get());
+            return pedidodetailDTO;
+        }
+        return null;
     }
 
     public void deactivePedido(Long id) {

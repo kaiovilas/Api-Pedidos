@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.curso.pedidos.DTO.PedidoDTO;
+import com.curso.pedidos.DTO.PedidodetailDTO;
 import com.curso.pedidos.ItemService.PedidoService;
 import com.curso.pedidos.models.Pedido;
 
@@ -26,8 +27,8 @@ public class PedidoController {
     }
 
     @GetMapping("/pedidos/{id}")
-    public Pedido listarId(@PathVariable Long id) {
-        return pedidoService.buscarPedidoId(id).orElse(null);
+    public PedidodetailDTO listarId(@PathVariable Long id) {
+        return pedidoService.buscarPedidoId(id);
     }
 
     @PostMapping("/pedidos")

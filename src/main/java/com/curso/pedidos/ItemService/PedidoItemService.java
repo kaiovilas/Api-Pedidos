@@ -1,5 +1,6 @@
 package com.curso.pedidos.ItemService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,16 @@ public class PedidoItemService {
 
     public void insert(PedidoItem pedidoItem){
         pedidoItemRepository.save(pedidoItem);
+    }
+
+    public List<PedidoItem> getPedidoItemBypedidoId(Long pedidoId){
+        List<PedidoItem> allPedidoItems = pedidoItemRepository.findAll();
+        List<PedidoItem> resultado = new ArrayList<>();
+        for(PedidoItem pedidoItem : allPedidoItems){
+            if(pedidoItem.getIdPedido().equals(pedidoId)){
+                resultado.add(pedidoItem);
+            }
+        }
+        return resultado;
     }
 }

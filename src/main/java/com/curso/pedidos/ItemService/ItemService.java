@@ -1,5 +1,6 @@
 package com.curso.pedidos.ItemService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.curso.pedidos.Repository.ItemRepository;
 import com.curso.pedidos.models.Item;
+import com.curso.pedidos.models.PedidoItem;
 
 @Service
 public class ItemService {
@@ -44,5 +46,14 @@ public class ItemService {
             itemExistente.get().setAtivado(false);
             itemRepository.save(itemExistente.get());
         }
+    }
+
+    public List<Item> listaItem(List<PedidoItem> allPedidoItems){
+        List<Item> resultado = new ArrayList<>();
+        for(PedidoItem item : allPedidoItems){
+            Item itemOptional = itemRepository.findById(item.getIdItem()).orElse(null);
+            resultado.add(itemOptional);
+        }
+        return resultado;
     }
 }
