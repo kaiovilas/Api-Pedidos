@@ -29,9 +29,12 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
-    public Pedido criarPedido(PedidoDTO pedido) {
+    public Pedido criarPedido(PedidoDTO pedido) throws Exception {
+        if (!cpfValidation(pedido.getCpf())) {
+            throw new Exception("CPF invalido");
+        }
         Pedido savedPedido = pedidoRepository.save(pedido.toEntity());
-        for(Long item : pedido.getItens()){
+        for (Long item : pedido.getItens()) {
             PedidoItem pedidoItem = new PedidoItem();
             pedidoItem.setIdItem(item);
             pedidoItem.setIdPedido(savedPedido.getId());
@@ -43,7 +46,7 @@ public class PedidoService {
     public PedidodetailDTO buscarPedidoId(Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         if (pedido.isPresent()) {
-            List<PedidoItem> listaPedidosItens =  pedidoItemService.getPedidoItemBypedidoId(id);
+            List<PedidoItem> listaPedidosItens = pedidoItemService.getPedidoItemBypedidoId(id);
             PedidodetailDTO pedidodetailDTO = new PedidodetailDTO();
             List<Item> listaItens = itemService.listaItem(listaPedidosItens);
             pedidodetailDTO.setItens(listaItens);
@@ -59,5 +62,12 @@ public class PedidoService {
             pedidoExistente.get().setAtivado(false);
             pedidoRepository.save(pedidoExistente.get());
         }
+    }
+
+    public boolean cpfValidation(String cpf) {
+        if (cpf.matches("\\d{9}")) {
+            return true;
+        }
+        return false;
     }
 }
